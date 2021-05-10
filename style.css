@@ -5,3 +5,8 @@ html, body {
 canvas {
   display: block;
 }
+
+@font-face {
+  font-family: game_font_ttf;
+  src: url('./assets/manaspc.ttf');
+}

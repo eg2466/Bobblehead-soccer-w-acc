@@ -24,9 +24,9 @@ function draw_scoreboard() {
 
         fill(255);
         textSize(32);
-    text(":", width/2-10, 45)
-        text(player1_score, width/2-50, 45);
-        text(player2_score, width/2+30, 45);
+        text(":", width/2, 35)
+        text(player1_score, width/2-40, 35);
+        text(player2_score, width/2+40, 35);
     pop();
     
 //    if(football.collide(rightnet_right_pole)) {
@@ -60,15 +60,15 @@ function draw_scoreboard_1() {
     fill(255);
     textSize(32);
     if (game_timer_val >= 10) {
-        text("0:" + game_timer_val, width/2-40, 45);
+        text("0:" + game_timer_val, width/2, 35);
     }
     if (game_timer_val < 10) {
-        text('0:0' + game_timer_val, width/2-40, 45);
+        text('0:0' + game_timer_val, width/2, 35);
     }
     
     
-    text(player1_score, width/2-100, 45);
-    text(player2_score, width/2+80, 45);
+    text(player1_score, width/2-90, 35);
+    text(player2_score, width/2+90, 35);
     pop();
     
 

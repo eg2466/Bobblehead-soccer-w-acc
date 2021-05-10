@@ -108,6 +108,10 @@ let goal_whis_sd;
 let mm_sd;
 let stadium_sd;
 
+let ai_voice;
+
+let no_bkg_img_checked = false;
+let tts_checked = false;
 
 
 function resetGame() {
@@ -127,13 +131,14 @@ function preload(){
     //-------------------------- IMAGES -------------------------
     bg = loadImage('./assets/bkg.png');
     bg_1 = loadImage('./assets/bkg_1.png');
+    bg_wht = loadImage('./assets/wht_bkg.png');
+    acc_bkg = loadImage('./assets/acc_bkg_1.png');
     
     tile_img = loadImage('./assets/Tile.png');
-//    htp_img = loadImage('./assets/htp.png');
+
     htp_img = loadAnimation('./assets/htp.png', './assets/htp_1.png');
     htp_img_1 = loadAnimation('./assets/htp_3.png');
-//    winning_sprite = loadAnimation('./assets/endgame/win_1.png', './assets/endgame/win_2.png');
-//    losing_sprite = loadAnimation('./assets/endgame/lose_1.png', './assets/endgame/lose_2.png');
+
     
     green_head_img = loadImage('./assets/green_head.png');
     red_head_img = loadImage('./assets/red_head.png');
@@ -208,22 +213,17 @@ function touchStarted() {
 function setup() {
 
     createCanvas(windowWidth, windowHeight);
-//      if (getAudioContext().state !== 'running') {
-//    getAudioContext().resume();
-//  }
-    
-//    print("window " + windowHeight);  
+    textFont(game_font);
+
+    ai_voice = new p5.Speech();
+    ai_voice.setRate(1.2);
     
 
-    
     if (gameState === 'start'){
         textFont(game_font);
         mm_sd.amp(0.2);
         
         mm_sd.play();
-//        getAudioContext().resume();
-//        mm_sd.amp(0.2);
-//        mm_sd.play();
         
         
         game_10_btn = new Clickable();
@@ -272,7 +272,7 @@ function setup() {
         
         online_game_btn = new Clickable();
         online_game_btn.resize(280, 80)
-        online_game_btn.locate((width/2-350) , 420)
+        online_game_btn.locate((width/2-350) , 520)
         online_game_btn.cornerRadius = 10;
         online_game_btn.strokeWeight = 2;
         online_game_btn.stroke = "#ffffff"; 
@@ -319,7 +319,7 @@ function setup() {
         acc_opt_btn.stroke = "#ffffff"; 
         acc_opt_btn.color = "#ffffff";
 
-        acc_opt_btn.text = "Accessibility";
+        acc_opt_btn.text = "ACCESSIBILITY";
         acc_opt_btn.textSize = 32;
         acc_opt_btn.textColor = "#000000";
         acc_opt_btn.textFont = game_font;
@@ -388,6 +388,7 @@ function setup() {
         mainm_btn_1.onRelease = function(){
             mm_sd.stop();
             gameState = 'game_end';
+
             setup();
         } 
 
@@ -481,6 +482,8 @@ function setup() {
         
         mm_btn.onRelease = function(){
             console.log("Button released!");
+            ai_voice.cancel();
+            tts_checked = false;
 //            removeSprites();
             removeSprite(winlose_sprite);
             removeSprite(player_head_sprite.sprite);
@@ -529,17 +532,38 @@ function setup() {
         mainm_btn_3.locate(50 , 35)
         mainm_btn_3.cornerRadius = 10;
         mainm_btn_3.strokeWeight = 2;
-        mainm_btn_3.stroke = "#ffffff"; 
-        mainm_btn_3.color = "#ffffff";
+        mainm_btn_3.stroke = "#000000"; 
+        mainm_btn_3.color = "#000000";
 
         mainm_btn_3.text = "<";
         mainm_btn_3.textSize = 32;
-        mainm_btn_3.textColor = "#000000";
+        mainm_btn_3.textColor = "#ffffff";
         mainm_btn_3.textFont = game_font;
         mainm_btn_3.textScaled = false;
 
+        no_bkg_img_check = createCheckbox('NO BACKGROUND IMAGE', false);
+        no_bkg_img_check.style('font-size', '50px');
+        no_bkg_img_check.style('font-family', 'game_font_ttf');
+        no_bkg_img_check.changed(no_bkg_img_check_event);
+
+        tts_check = createCheckbox('TEXT-TO-SPEECH', false);
+        tts_check.style('font-size', '50px');
+        tts_check.style('font-family', 'game_font_ttf');
+        tts_check.changed(tts_check_event);
+
+        //checkbox postions
+        no_bkg_img_check.position(width/2-300, 400);
+        tts_check.position(width/2-300, 480);
+
         mainm_btn_3.onRelease = function(){
             mm_sd.stop();
+
+            // no_bkg_img_check.position(width+50, 400);
+            // tts_check.position(width+50, 480);
+
+            no_bkg_img_check.remove();
+            tts_check.remove();
+
             gameState = 'start';
             setup();
         } 
@@ -548,6 +572,25 @@ function setup() {
 
 }
 
+function no_bkg_img_check_event() {
+    if (this.checked()) {
+        no_bkg_img_checked = true;
+      console.log('no bkg Checking!');
+    } else {
+        no_bkg_img_checked = false;
+      console.log('no bkg Unchecking!');
+    }
+}
+
+function tts_check_event() {
+    if (this.checked()) {
+        tts_checked = true;
+      console.log('tts Checking!');
+    } else {
+        tts_checked = false;
+      console.log('tts Unchecking!');
+    }
+  }
 
 
 
@@ -584,8 +627,10 @@ function howtoplay(){
     mainm_btn.draw();
 }
 
+
+
 function draw_accessibility(){
-    background(main_bkg);
+    background(acc_bkg);
     mainm_btn_3.draw();
 }
 
@@ -623,7 +668,6 @@ function drawStartMenu(){
 
 
 
-
 function draw_end_Game(){
     background(0);
     mm_btn.draw();
@@ -637,6 +681,9 @@ function draw_end_Game(){
             
             if(player1_score < player2_score){
                 fill(255, 0 ,0)
+                if(tts_checked == true){
+                    ai_voice.speak('You Lose!. The score was '+ player1_score + ' to '+player2_score);
+                }
                 text("You Lose!", width/2, height/2-30);
                 winlose_sprite.changeAnimation("lose")
             }
@@ -644,6 +691,9 @@ function draw_end_Game(){
             
             else if(player1_score > player2_score){
                 fill(0, 255 ,0)
+                if(tts_checked == true){
+                    ai_voice.speak('You Win!. The score was '+ player1_score + ' to '+player2_score);
+                }
                 text("You Win!", width/2, height/2-30);
                 winlose_sprite.changeAnimation("win")
             }
@@ -651,6 +701,9 @@ function draw_end_Game(){
             
             else if(player1_score === player2_score || (player2_score === 0 && player1_score === 0) ){
                 fill(0, 0 ,250)
+                if(tts_checked == true){
+                    ai_voice.speak('The game ended in a draw!. The score was '+ player1_score + ' to '+player2_score);
+                }
                 text("Draw!", width/2, height/2-30);
                 winlose_sprite.changeAnimation("draw")
             }
@@ -663,11 +716,39 @@ function draw_end_Game(){
 
 
 
+function keyPressed() {
+    if(tts_checked == true){
+        if (keyCode === UP_ARROW) {
+            ai_voice.speak('jump');
+            console.log('player jump')
+        }
+
+        if (keyCode === LEFT_ARROW) {
+            ai_voice.speak('MOVE LEFT');
+        }
+        if (keyCode === RIGHT_ARROW) {
+            ai_voice.speak('MOVE RIGHT');
+        }
+        if (keyCode === 32) {
+            ai_voice.speak('KICK');
+        }
+    }
+  }
+
+
 
 function draw_10_Game(){
-    background(bg_1);
-    
 
+    if(no_bkg_img_checked == true){
+        background(bg_wht);
+    }if(no_bkg_img_checked == false) {
+        background(bg_1);
+    }
+
+    // if(keyIsDown(RIGHT_ARROW)){
+        // console.log('player move right')
+        // ai_voice.speak('player move right');
+    // }
     
     if(football_arr.length == 0){
         for(let i = 0; i < 1; i++){
@@ -777,11 +858,15 @@ function draw_10_Game(){
         // if player1 scores
         if(football_sprite.sprite.collide(rightnet_right_pole) || ((football_sprite.sprite.position.x > width-28) && (football_sprite.sprite.position.y> height-250)) ){
             goal_scream_sd.play();
-            goal_whis_sd.play(); 
+            goal_whis_sd.play();
+
+            // console.log('tts_checked: '+tts_checked) 
             removeSprite(football_sprite.sprite)
           football_arr.splice(w,1);
           player1_score += 1;
-            
+          if(tts_checked == true){
+            ai_voice.speak('You Scored. The score is '+ player1_score + ' to '+player2_score);
+        }
             
           break;
         }
@@ -792,9 +877,13 @@ function draw_10_Game(){
         if(football_sprite.sprite.collide(leftnet_left_pole) || ((football_sprite.sprite.position.x < 28) && (football_sprite.sprite.position.y> height-250)) ){
             goal_scream_sd.play();
             goal_whis_sd.play(); 
+
             removeSprite(football_sprite.sprite)
             football_arr.splice(w,1);
             player2_score += 1;
+            if(tts_checked == true){
+                ai_voice.speak('They Scored. The score is '+ player1_score + ' to '+player2_score);
+            }
             break;
         }
         
@@ -828,7 +917,13 @@ function draw_10_Game(){
 
 
 function draw_timer_Game(){
-    background(bg);
+
+    if(no_bkg_img_checked == true){
+        background(bg_wht);
+    }if(no_bkg_img_checked == false) {
+        background(bg);
+    }
+    // background(bg);
     
 
     
@@ -851,13 +946,6 @@ function draw_timer_Game(){
     football_sprite.sprite.bounce(player_head_sprite.sprite);
     football_sprite.sprite.bounce(bot_head_sprite.sprite);
 
-    
-    
-    
-    
-//    net_draw();
-
-        
     
     
 //    console.log(football_sprite.sprite.position.y);
@@ -926,8 +1014,6 @@ function draw_timer_Game(){
     
 
 
-
-    
     
     for(let w = 0; w < football_arr.length; w++) {
         
