@@ -825,6 +825,9 @@ function draw_10_Game(){
              if(power_up_type === "frozen"){
                  head_acc = 0;
                  console.log("im frozen");  
+                 if(tts_checked == true){
+                    ai_voice.speak('You are frozen for 10 seconds');
+                }
                  timer_int_1 = setInterval(() => {if (timerValue > 0) {timerValue--;}}, 1000);   
             }
             if(power_up_type === "normal"){
@@ -994,6 +997,9 @@ function draw_timer_Game(){
              if(power_up_type === "frozen"){
                  head_acc = 0;
                  console.log("im frozen");  
+                 if(tts_checked == true){
+                    ai_voice.speak('You are frozen for 10 seconds');
+                }
                  timer_int_1 = setInterval(() => {if (timerValue > 0) {timerValue--;}}, 1000);   
             }
             if(power_up_type === "normal"){
@@ -1026,10 +1032,14 @@ function draw_timer_Game(){
         if(football_sprite.sprite.collide(rightnet_right_pole) || ((football_sprite.sprite.position.x > width-28) && (football_sprite.sprite.position.y> height-260)) ){
             goal_scream_sd.play();
             goal_whis_sd.play(); 
+
             removeSprite(football_sprite.sprite)
           football_arr.splice(w,1);
           player1_score += 1;
-            
+          if(tts_checked == true){
+            ai_voice.speak('You Scored. The score is '+ player1_score + ' to '+player2_score);
+            console.log('you scored');
+        }
             
           break;
         }
@@ -1043,6 +1053,10 @@ function draw_timer_Game(){
             removeSprite(football_sprite.sprite)
             football_arr.splice(w,1);
             player2_score += 1;
+            if(tts_checked == true){
+                ai_voice.speak('They Scored. The score is '+ player1_score + ' to '+player2_score);
+                console.log('They scored');
+            }
             break;
         }
         

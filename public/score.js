@@ -63,6 +63,12 @@ function draw_scoreboard_1() {
         text("0:" + game_timer_val, width/2, 35);
     }
     if (game_timer_val < 10) {
+        if(tts_checked == true){
+            ai_voice.speak(game_timer_val + ' seconds left');
+            if(game_timer_val == 0){
+                ai_voice.stop();
+            }
+        }
         text('0:0' + game_timer_val, width/2, 35);
     }
     
