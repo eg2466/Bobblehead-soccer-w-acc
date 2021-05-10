@@ -546,7 +546,7 @@ function setup() {
         no_bkg_img_check.style('font-family', 'game_font_ttf');
         no_bkg_img_check.changed(no_bkg_img_check_event);
 
-        tts_check = createCheckbox('TEXT-TO-SPEECH', false);
+        tts_check = createCheckbox('ENABLE AUDIO CUES', false);
         tts_check.style('font-size', '50px');
         tts_check.style('font-family', 'game_font_ttf');
         tts_check.changed(tts_check_event);
@@ -1029,7 +1029,7 @@ function draw_timer_Game(){
         }
 
         // if player1 scores
-        if(football_sprite.sprite.collide(rightnet_right_pole) || ((football_sprite.sprite.position.x > width-28) && (football_sprite.sprite.position.y> height-260)) ){
+        if(football_sprite.sprite.collide(rightnet_right_pole) || ((football_sprite.sprite.position.x > width-27) && (football_sprite.sprite.position.y> height-260)) ){
             goal_scream_sd.play();
             goal_whis_sd.play(); 
 
@@ -1047,7 +1047,7 @@ function draw_timer_Game(){
 //        console.log(football_sprite.sprite.position.x);
         
         // if player2 scores
-        if(football_sprite.sprite.collide(leftnet_left_pole) || ((football_sprite.sprite.position.x < 28) && (football_sprite.sprite.position.y> height-260)) ){
+        if(football_sprite.sprite.collide(leftnet_left_pole) || ((football_sprite.sprite.position.x < 27) && (football_sprite.sprite.position.y> height-260)) ){
             goal_scream_sd.play();
             goal_whis_sd.play(); 
             removeSprite(football_sprite.sprite)
