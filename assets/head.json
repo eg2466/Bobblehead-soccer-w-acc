@@ -1,0 +1,11 @@
+{'name':'player_kick01', 'frame':{'x':0, 'y': 0, 'width': 65, 'height': 76}},
+{'name':'player_kick02', 'frame':{'x':81, 'y': 0, 'width': 71, 'height': 76}},
+{'name':'player_kick03', 'frame':{'x':168, 'y': 0, 'width': 81, 'height': 76}},
+{'name':'player_kick04', 'frame':{'x':265, 'y': 0, 'width': 91, 'height': 76}},
+{'name':'player_kick05', 'frame':{'x':372, 'y': 0, 'width': 94, 'height': 76}},
+{'name':'player_kick06', 'frame':{'x':482, 'y': 0, 'width': 92, 'height': 76}},
+{'name':'player_kick07', 'frame':{'x':372, 'y': 0, 'width': 94, 'height': 76}},
+{'name':'player_kick08', 'frame':{'x':265, 'y': 0, 'width': 91, 'height': 76}},
+{'name':'player_kick09', 'frame':{'x':168, 'y': 0, 'width': 81, 'height': 76}},
+{'name':'player_kick10', 'frame':{'x':81, 'y': 0, 'width': 71, 'height': 76}},
+{'name':'player_kick11', 'frame':{'x':0, 'y': 0, 'width': 65, 'height': 76}}
